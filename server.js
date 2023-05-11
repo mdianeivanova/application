@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { getTransactions, addTransaction, deleteTransaction } = require('./TransactionManager');
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 
@@ -30,3 +30,4 @@ app.delete('/transactions/:transaction_id', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+

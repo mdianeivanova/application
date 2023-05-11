@@ -1,23 +1,24 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const { getTransactions, addTransaction, deleteTransaction } = require('./TransactionManager');
-const app = express();
-const PORT = process.env.PORT || 5000;
+const { Transaction, getTransactions, addTransaction, deleteTransaction } = require('./TransactionManager');
+const router = express.Router();
 
-app.use(bodyParser.json());
-
-app.get('/transactions', (req, res) => {
+router.get('/', (req, res) => {
   const transactions = getTransactions();
   res.status(200).json(transactions);
 });
 
-app.post('/transactions', (req, res) => {
-  const transaction = req.body;
-  const newTransaction = addTransaction(transaction);
+router.post('/', (req, res) => {
+  const { date, description, amount, type } = req.body;
+
+  if (!date || !description || !amount || !type) {
+    res.status(400).send('Bad request: missing required fields');
+    return;
+  }
+  const newTransaction = addTransaction({ date, description, amount, type });
   res.status(201).json(newTransaction);
 });
 
-app.delete('/transactions/:transaction_id', (req, res) => {
+router.delete('/:transaction_id', (req, res) => {
   const transactionId = req.params.transaction_id;
   const deletedTransaction = deleteTransaction(transactionId);
   if (deletedTransaction) {
@@ -27,6 +28,4 @@ app.delete('/transactions/:transaction_id', (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+module.exports = router;

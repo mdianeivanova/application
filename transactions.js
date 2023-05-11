@@ -1,5 +1,5 @@
 const express = require('express');
-const { Transaction, getTransactions, addTransaction, deleteTransaction } = require('../TransactionManager');
+const { Transaction, getTransactions, addTransaction, deleteTransaction } = require('TransactionManager');
 const router = express.Router();
 router.get('/', (req, res) => {
   const transactions = getTransactions();
@@ -17,7 +17,7 @@ router.post('/', (req, res) => {
   res.json(newTransaction);
 });
 
-router.delete('/:transaction_id', (req, res) => {
+router.delete(':transaction_id', (req, res) => {
   const transactionId = req.params.transaction_id;
   const deletedTransaction = deleteTransaction(transactionId);
   if (deletedTransaction) {

@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { getTransactions, addTransaction, deleteTransaction } = require('./TransactionManager');
 const app = express();
-const PORT = 3000;
+const PORT = 5000;
 
 app.use(bodyParser.json());
 
